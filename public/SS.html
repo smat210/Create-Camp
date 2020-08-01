@@ -320,8 +320,28 @@
         </script>
 
       </div> -->
+    <script>
+      const parseResponse = json => {
+        const features = json.features;
+        const cleanedUp = features.map(item => ({
+          name: item.properties.name,
+          suburb: item.properties.suburb,
+          lat: item.geometry.coordinates[0],
+          long: item.geometry.coordinates[1],
+        }));
+        console.log(cleanedUp);
+        const filtered = (suburb) => cleanedUp.reduce((acc, item) => {
+          if (item.suburb === suburb) {
+            acc.push(item);
+          }
+          return acc;
+        }, []);
+        console.log(filtered("Karori"));
+      }
 
-
+      fetch('https://opendata.arcgis.com/datasets/f43ee88a2fb04c6daa39272f4b5bff77_1.geojson').then(response =>  response.json())
+      .then(json => parseResponse(json));
+    </script>
     <div id="map"></div>
 
     <input
