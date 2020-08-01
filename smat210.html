@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BOB DURAN MUSEUM OF COMPUTING</title>
+    <link rel="stylesheet" href="smat210.css"/>
+    <script defer src="smat210.js"></script>
+  </head>
+
+  <body onload="main()">
+    <nav>
+      <div class="logo">
+        <img src="http://redsox.uoa.auckland.ac.nz/ms/logo.svg" alt="logo" />
+        <h4>THE BOB DURAN MUSEUM OF COMPUTING</h4>
+      </div>
+
+        
+    
+      <ul class="nav-links">
+        <li>
+        <a href="#" onclick="home()"> Home</a>
+        </li>
+        <li>
+        <a href="#" onclick="getNews()"> News</a>
+        </li>
+        <li>
+        <a href="#" onclick="getItems()"> Displays</a>
+        </li>
+        <li>
+        <a href="#" onclick="getHtmlcomments()"> Guest Book </a>
+        </li>
+        <li>
+        <a href ="#" onclick="getShop()"> Shop</a>
+        </li>
+        <li>
+          <a href = "#" onclick = "userReg()">User</a>
+        </li>
+      </ul>
+        <div class="myclass">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+        </nav>
+
+    <div id="home">
+      <p> <b>Welcome to The Bob Doran Museum of Computing</b></p>
+      <p>You can learn more about the displays here. If you are intrigued by what you find here and live close to Auckland, 
+        or are visiting the city, please feel free to drop in to the school and see the displays for yourself.
+        We are located at the University on Princes Street and are always open during normal office hours and also in the evenings and on the weekends 
+        when classes are in session.
+        <br>
+        <br>
+        <img src= "https://www.ifsa-butler.org/wp-content/uploads/2017/07/UAK-Engineering-Building-Photo-Supplied-by-UAK-Uni-2000x1125.jpg" alt="Museum" style="width: 900px">
+      </p>
+    </div>
+
+    <div id="news" style="display:none">
+    </div>
+
+    <div id="items" style="display:none">
+
+      <div id="getsearch">
+            <input id = "Searchbar"type="text" placeholder="Search" onkeyup="getSearch()">
+      </div>
+      <div id ="contents">
+      </div>
+
+    </div>
+
+    <div id="htmlcomments" style="display:none">
+      <br>
+      <br>
+       Comment: <input name= "Comment:" type="textarea" id="postcomment">
+       Name: <input name= "Name:" type="text" id="author">
+        <button onclick ="postComment()">Submit</button>
+      <br>
+      <br>
+      <iframe id="com" src="http://redsox.uoa.auckland.ac.nz/ms/MuseumService.svc/htmlcomments"></iframe>
+    </div>
+
+    <div id="version" style="display: block">
+    </div>
+
+    <div id="shop">
+        <div id="shopSearch">
+            <input id = "shopsearchbar" type="text" placeholder="Search" onkeyup="shopSearch()">
+      </div>
+        <div id ="shopcontent">
+
+        </div>
+    </div>
+
+    <div id="regform">
+        <label for="address"> Address</label>
+         	<input id="useradd" type="text" placeholder="Enter address" name="address">
+        
+        <label for="name">Name</label>
+          <input id="username" type="text" placeholder="Enter name" name="name" required>
+          
+        <label for="password">Password</label>
+          <input id="userpwd" type="password" placeholder="Enter password" name="password" required>
+          
+        <button id="regbutton" onclick="userReg()">Submit</button>
+    </div>
+
+
+  </body>
+</html>
