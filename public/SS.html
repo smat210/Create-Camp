@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Welcome</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-ThQVi7o6itUSAM87R6V_r1Yu2eYgyvY&callback=initMap">
+    </script>
+
+  <script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" rel="stylesheet" />
+
+  <link href="https://cdn-webgl.wrld3d.com/wrldjs/addons/resources/latest/css/wrld.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn-webgl.wrld3d.com/wrldjs/addons/searchbar/latest/searchbar.js"></script>
+  <!-- <script>
+    function initMap() {
+      var wlg = { lat: -41.276, lng: 174.77 };
+      var map = new google.maps.Map(document.getElementById('map'), { zoom: 15, center: wlg });
+      var marker = new google.maps.Marker({ position: wlg, map: map });
+    }
+  </script> -->
+
+<title>Places Search Box</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-ThQVi7o6itUSAM87R6V_r1Yu2eYgyvY&callback=initAutocomplete&libraries=places&v=weekly"
+  defer
+></script>
+<script>
+  "use strict";
+
+  // This example adds a search box to a map, using the Google Place Autocomplete
+  // feature. People can enter geographical searches. The search box will return a
+  // pick list containing a mix of places and predicted search terms.
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+  function initAutocomplete() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: {
+        lat: -41.276,
+        lng: 174.77
+      },
+      zoom: 13,
+      mapTypeId: "roadmap"
+    }); // Create the search box and link it to the UI element.
+
+    const input = document.getElementById("pac-input");
+    const searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); // Bias the SearchBox results towards current map's viewport.
+
+    map.addListener("bounds_changed", () => {
+      searchBox.setBounds(map.getBounds());
+    });
+    let markers = []; // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      } // Clear out the old markers.
+
+      markers.forEach(marker => {
+        marker.setMap(null);
+      });
+      markers = []; // For each place, get the icon, name and location.
+
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach(place => {
+        if (!place.geometry) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+
+        const icon = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        }; // Create a marker for each place.
+
+        markers.push(
+          new google.maps.Marker({
+            map,
+            icon,
+            title: place.name,
+            position: place.geometry.location
+          })
+        );
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      map.fitBounds(bounds);
+    });
+    // Create a <script> tag and set the USGS URL as the source.
+      var script = document.createElement('script');
+        // This example uses a local copy of the GeoJSON stored at
+        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+        script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+      }
+
+      // Loop through the results array and place a marker for each
+      // set of coordinates.
+      window.eqfeed_callback = function(results) {
+        for (var i = 0; i < results.features.length; i++) {
+          var coords = results.features[i].geometry.coordinates;
+          var latLng = new google.maps.LatLng(coords[1],coords[0]);
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+          });
+        }
+      }
+  
+</script>
+
+<style type="text/css">
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 100%;
+  }
+
+  /* Optional: Makes the sample page fill the window. */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #description {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  #infowindow-content .title {
+    font-weight: bold;
+  }
+
+  #infowindow-content {
+    display: none;
+  }
+
+  #map #infowindow-content {
+    display: inline;
+  }
+
+  .pac-card {
+    margin: 10px 10px 0 0;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    font-family: Roboto;
+  }
+
+  #pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+  }
+
+  .pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+  }
+
+  .pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  #pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 400px;
+  }
+
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
+
+  #title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 6px 12px;
+  }
+
+  #target {
+    width: 345px;
+  }
+</style>
+
+  <style>
+    #map {
+      height: 650px;
+      /* The height is 400 pixels */
+      width: 100%;
+      /* The width is the width of the web page */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="search-box">
+    <input type="text" placeholder="Search here..." />
+  </div>
+
+  <div class="nav-container">
+    <div class="wrapper">
+      <nav>
+        <div class="logo">
+          P&R
+        </div>
+
+        <ul class="nav-items">
+          <li>
+            <a href="#">Contact other Owners</a>
+          </li>
+
+          <li>
+            <a href="#">Customise your Dog walk</a>
+          </li>
+
+          <li>
+            <a href="#">Places to Go</a>
+          </li>
+
+          <li>
+            <a class="nav-btn-container" href="#">
+              <img class="search-btn" src="images/search-icon.svg" alt="" />
+              <img class="close-btn" src="images/close-icon.svg" alt="" />
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+
+  <!-- <div class="header-container"> -->
+
+    <!-- <script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script>
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" rel="stylesheet" />
+
+      <link href="https://cdn-webgl.wrld3d.com/wrldjs/addons/resources/latest/css/wrld.css" rel="stylesheet" />
+      <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+      <script src="https://cdn-webgl.wrld3d.com/wrldjs/addons/searchbar/latest/searchbar.js"></script> -->
+
+    <!-- <div style="position: absolute">
+        <div id="widget-container" class="wrld-widget-container"></div>
+        <div id="map" style="height: 600px"> -->
+    <!-- </div>
+
+        <script>
+          var map = L.Wrld.map("map", "your_api_key_here", {
+            center: [37.79505, -122.40815],
+            zoom: 15
+          });
+
+          var searchbarConfig = {
+            apiKey: "your_api_key_here",
+            outdoorSearchMenuItems: [
+              { name: "Around Me", searchTag: "", iconKey: "aroundme" },
+              { name: "Tourism", searchTag: "tourist_info", iconKey: "tourist_info" }
+            ],
+            locationJumps: [
+              { name: "Auckland", latLng: [37.7952, -122.4028] }
+            ]
+          };
+          var searchbar = new WrldSearchbar("widget-container", map, searchbarConfig);
+          searchbar.on("searchresultsclear", clearMarkers);
+          searchbar.on("searchresultsupdate", addSearchResultMarkers);
+          searchbar.on("searchresultselect", openSelectedResultPopup);
+
+          var markers = [];
+
+          function clearMarkers() {
+            markers.forEach(function (marker) { marker.remove(); });
+          }
+
+          function addSearchResultMarkers(event) {
+            clearMarkers();
+            for (var poiId in event.results) {
+              var result = event.results[poiId];
+              var marker = L.marker(result.location.latLng, { title: result.title });
+              marker.addTo(map);
+              markers.push(marker);
+            }
+          }
+
+          function openSelectedResultPopup(event) {
+            map.openPopup(event.result.title, event.result.location.latLng);
+          }
+        </script>
+
+      </div> -->
+
+
+    <div id="map"></div>
+
+    <input
+      id="pac-input"
+      class="controls"
+      type="text"
+      placeholder="Search Box"/>
+    <div id="map"></div>
+
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>
