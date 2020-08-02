@@ -85,30 +85,65 @@
       //     })
       //   );
 
-      //   if (place.geometry.viewport) {
-      //     // Only geocodes have viewport.
-      //     bounds.union(place.geometry.viewport);
-      //   } else {
-      //     bounds.extend(place.geometry.location);
-      //   }
-      // });
-      // map.fitBounds(bounds);
-      // });
-      // }
-  
-    var parks = filtered("Karori");
-
-    for (var i = 0; i < parks.length; i++) {
-        var coords = parks[i];
-        var latLng = new google.maps.LatLng(coords[lat],coords[long]);
-        console.log("Coords")
-        console.log(latLng)
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map
-        });
+      // Loop through the results array and place a marker for each
+      // set of coordinates.
+      window.eqfeed_callback = function(results) {
+        for (var i = 0; i < results.features.length; i++) {
+          var coords = results.features[i].geometry.coordinates;
+          var latLng = new google.maps.LatLng(coords[1],coords[0]);
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+          });
+        }
       }
-</script> -->
+      function filtersPopup(){
+        document.getElementById("myModal").style.display="block";
+      }
+</script>
+
+<div id="myModal" class="modal">
+ 
+                  
+  <h2>Select your category</h2>
+    <span onclick="document.getElementById('myModal').style.display='none'" 
+       class="close">&times;</span>
+              
+    <div>
+      <br>
+        <input id="box1check" class="check" type="checkbox">
+        <label>Leash </label>
+      </br>
+      <br>
+        <input id="box2check" class="check" type="checkbox">
+        <label>Unleash </label>
+      </br>
+      <br>
+        <input id="box3check" class="check" type="checkbox">
+        <label>Water</label>
+      </br>
+      <br>
+        <input id="box4check" class="check" type="checkbox">
+        <label>Fence</label>
+      </br>
+      <br>
+        <input id="box5check" class="check" type="checkbox">
+        <label>Small dog</label>
+      </br>
+      <br>
+        <input id="box6check" class="check" type="checkbox">
+        <label>Big dog</label>
+      </br>
+      </div>
+                
+</div>
+
+
+<a>
+    <img class="bottomright" alt="Filter icon" src="/Icn_filter.png" onclick="filtersPopup()" width="100" height="100">
+</a>   
+
+
 
 <style type="text/css">
   /* Always set the map height explicitly to define the size of the div
