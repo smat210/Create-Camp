@@ -61,7 +61,7 @@
   .bottomright {
     position: fixed;
     bottom: 8px;
-    right: 16px;
+    left: 16px;
     background-repeat: no-repeat; 
     z-index: 10000;
   }
