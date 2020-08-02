@@ -63,6 +63,7 @@
     bottom: 8px;
     right: 16px;
     background-repeat: no-repeat; 
+    z-index: 10000;
   }
 
   .modal{
@@ -84,6 +85,9 @@
       float: right;
       font-size: 28px;
       font-weight: bold;
+      position: absolute;
+      top: 11px;
+      right: 5px;
     }
     
     .close:hover,
